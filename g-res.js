@@ -5,6 +5,7 @@
 // @description 在谷歌搜索结果页面添加底部搜索框，并修改搜索结果打开方式为新窗口打开
 // @description:en Add another search input at the bottom of result page & change the redirect way from "current tab" to "new tab"
 // @namespace   https://greasyfork.org/zh-CN/scripts/33481
+// @license     GPL-3.0-or-later
 // @include     *://www.google.com*/search*
 // @require     https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js
 // @grant       none
