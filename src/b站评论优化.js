@@ -13,7 +13,7 @@
 // @homepageURL  https://github.com/Xli33/fun-script
 // ==/UserScript==
 
-window.addEventListener("load", () => {
+(() => {
 	"use strict";
 
 	const getEl = (name) => document.querySelector(name);
@@ -67,9 +67,13 @@ window.addEventListener("load", () => {
 				return;
 			}
 			mutations.forEach((e) => {
-				if (e.type !== "childList" || !e.addedNodes[0]) return;
+				if (e.type !== "childList" || e.addedNodes[0]?.nodeType !== 1)
+					return;
 				// 根评论下有新的子评论
-				if (e.target === elReplyList) {
+				if (
+					e.target === elReplyList &&
+					e.addedNodes[0].classList.contains("reply-item")
+				) {
 					const { reply_control } =
 						e.addedNodes[0].__vueParentComponent.ctx.reply;
 					e.addedNodes[0]
@@ -132,4 +136,4 @@ window.addEventListener("load", () => {
 			`.${labelClass}{margin-right:10px;color:var(${id})}.${labelClass}>input{overflow:hidden;width:0;height:0;border:none;visibility:hidden;}`,
 		);
 	};
-});
+})();
