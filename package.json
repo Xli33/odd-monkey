@@ -1,6 +1,6 @@
 {
-  "name": "fun-script",
-  "version": "1.0.0",
+  "name": "odd-script",
+  "version": "1.1.0",
   "description": "web scripts",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xli33/fun-script.git"
+    "url": "git+https://github.com/Xli33/odd-script.git"
   },
   "author": "Xli33",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/Xli33/fun-script/issues"
+    "url": "https://github.com/Xli33/odd-script/issues"
   },
-  "homepage": "https://github.com/Xli33/fun-script#readme",
+  "homepage": "https://github.com/Xli33/odd-script#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.8.0",
     "@commitlint/config-conventional": "^17.8.0",

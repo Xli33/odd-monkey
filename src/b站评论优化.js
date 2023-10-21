@@ -2,15 +2,15 @@
 // @name        b站评论显ip归属
 // @description b站评论显ip归属，点击可调整文字颜色
 // @author      (σ｀д′)σ
-// @version     1.0
+// @version     1.0.1
 // @namespace   https://greasyfork.org/zh-CN/scripts/477707
 // @license     GPL-3.0-or-later
 // @match       *://www.bilibili.com/video/*
 // @match       *://www.bilibili.com/bangumi/play/*
 // @grant       GM_addStyle
 // @run-at      document-end
-// @supportURL   https://github.com/Xli33/fun-script
-// @homepageURL  https://github.com/Xli33/fun-script
+// @supportURL  https://github.com/Xli33/odd-script
+// @homepageURL https://github.com/Xli33/odd-script
 // ==/UserScript==
 
 (() => {

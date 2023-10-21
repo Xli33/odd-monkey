@@ -10,8 +10,8 @@
 // @require     https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js
 // @grant       none
 // @run-at      document-body
-// @supportURL   https://github.com/Xli33/fun-script
-// @homepageURL  https://github.com/Xli33/fun-script
+// @supportURL  https://github.com/Xli33/odd-script
+// @homepageURL https://github.com/Xli33/odd-script
 // ==/UserScript==
 
 $(function () {
