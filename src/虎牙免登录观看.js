@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name        虎牙免登录观看
-// @description 虎牙免登录观看时无限制播放，并隐藏进入页面后的登录框，若需要登录请勿安装！！
+// @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.0
+// @version     1.1.1
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
 // @run-at      document-end
 // @grant       GM_addStyle
-// @supportURL  https://github.com/Xli33/odd-script
-// @homepageURL https://github.com/Xli33/odd-script
+// @supportURL  https://greasyfork.org/zh-CN/scripts/477947
+// @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
 
 (() => {
@@ -34,9 +34,28 @@
         }).observe(mask, {
           attributes: true,
         });
-        // 无限制播放
-        getById("hy-video").srcObject.active = false;
+
+        // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
+        try {
+          getById("hy-video").srcObject.active = false;
+        } catch (e) {}
         ob.disconnect();
+
+        // 解锁需要登录的清晰度
+        const $vtList = $("#player-ctrl-wrap .player-videotype-list");
+        const unlockRES = () => {
+          $vtList
+            .children(":has(.bitrate-right-btn.login-enjoy-btn)")
+            .each((i, e) => {
+              $(e).data("data").status = 0;
+            });
+        };
+        new MutationObserver(unlockRES).observe($vtList[0], {
+          attributes: false,
+          childList: true,
+          subtree: false,
+        });
+        unlockRES();
       }
     }).observe(document.body, {
       attributes: false,
