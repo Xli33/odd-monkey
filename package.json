@@ -1,7 +1,7 @@
 {
-  "name": "odd-script",
+  "name": "odd-monkey",
   "version": "1.2.0",
-  "description": "web scripts",
+  "description": "strange strange & strange web scripts on tampermonkey+violentmonkey",
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xli33/odd-script.git"
+    "url": "git+https://github.com/Xli33/odd-monkey.git"
   },
   "author": "Xli33",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/Xli33/odd-script/issues"
+    "url": "https://github.com/Xli33/odd-monkey/issues"
   },
-  "homepage": "https://github.com/Xli33/odd-script#readme",
+  "homepage": "https://github.com/Xli33/odd-monkey#readme",
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",

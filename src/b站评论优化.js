@@ -2,15 +2,15 @@
 // @name        b站评论显ip归属
 // @description b站评论显ip归属，点击可调整文字颜色
 // @author      (σ｀д′)σ
-// @version     1.0.1
+// @version     1.0.2
 // @namespace   https://greasyfork.org/zh-CN/scripts/477707
 // @license     GPL-3.0-or-later
 // @match       *://www.bilibili.com/video/*
 // @match       *://www.bilibili.com/bangumi/play/*
 // @grant       GM_addStyle
 // @run-at      document-end
-// @supportURL  https://github.com/Xli33/odd-script
-// @homepageURL https://github.com/Xli33/odd-script
+// @supportURL  https://greasyfork.org/zh-CN/scripts/477707
+// @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
 
 (() => {
@@ -109,7 +109,7 @@
 			subtree: true,
 		});
 
-		// 处理color input相关事件
+		// 通过列表代理color input相关事件
 		elReplyList.oninput = (e) => {
 			if (e.target.parentNode.className === labelClass) {
 				elReplyList.style.setProperty(id, e.target.value);
