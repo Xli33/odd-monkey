@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.4.0](https://github.com/Xli33/odd-monkey/compare/v1.3.0...v1.4.0) (2024-01-14)
+
+
+### Features
+
+* 添加虎牙观看选项：自动最高画质，默认不启用 ([7f00cee](https://github.com/Xli33/odd-monkey/commit/7f00ceecd91bfcafac40fdcd8eca85d22d27d3e9))
+
 ## [1.3.0](https://github.com/Xli33/odd-monkey/compare/v1.2.0...v1.3.0) (2024-01-13)
 
 
