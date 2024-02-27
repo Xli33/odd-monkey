@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.0](https://github.com/Xli33/odd-monkey/compare/v1.4.0...v1.5.0) (2024-02-27)
+
+
+### Features
+
+* 适配b站新策略，修复无法直接获取到评论归属地，顺便更改脚本名 ([b64da18](https://github.com/Xli33/odd-monkey/commit/b64da18fc2cf3a23950e927cac2082b74abdb7ac))
+
 ## [1.4.0](https://github.com/Xli33/odd-monkey/compare/v1.3.0...v1.4.0) (2024-01-14)
 
 
