@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/Xli33/odd-monkey#readme",
   "devDependencies": {
-    "@commitlint/cli": "^18.2.0",
-    "@commitlint/config-conventional": "^18.1.0",
-    "commit-and-tag-version": "^12.0.0",
-    "husky": "^8.0.3"
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "commit-and-tag-version": "^12.4.1",
+    "husky": "^9.0.11"
   }
 }
