@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.2](https://github.com/Xli33/odd-monkey/compare/v1.5.1...v1.5.2) (2024-06-04)
+
+
+### Bug Fixes
+
+* update version ([fca520f](https://github.com/Xli33/odd-monkey/commit/fca520f9ae14314a4837e17c83122e43a09a772e))
+
 ## [1.5.1](https://github.com/Xli33/odd-monkey/compare/v1.5.0...v1.5.1) (2024-06-04)
 
 
