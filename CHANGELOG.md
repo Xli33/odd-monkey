@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.5.1](https://github.com/Xli33/odd-monkey/compare/v1.5.0...v1.5.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* 修复免登录观看虎牙 ([70f26a9](https://github.com/Xli33/odd-monkey/commit/70f26a90d48dc81fb02f3c3e0357f649a12980be))
+
 ## [1.5.0](https://github.com/Xli33/odd-monkey/compare/v1.4.0...v1.5.0) (2024-02-27)
 
 
