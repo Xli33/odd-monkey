@@ -16,7 +16,7 @@
 // ==/UserScript==
 
 (() => {
-  "use strict";
+  'use strict';
 
   // 禁止虎牙篡改原生console
   // Object.freeze(console);
@@ -45,16 +45,16 @@
   const toggles = [
     {
       id: 1,
-      title: "自动最高画质",
-      gmKey: "autoBestRES",
-      gmValue: GM_getValue("autoBestRES"),
-    },
+      title: '自动最高画质',
+      gmKey: 'autoBestRES',
+      gmValue: GM_getValue('autoBestRES')
+    }
   ];
   toggles.forEach((e) => {
     registerToggle(
       e.id,
-      (e.gmValue ? "✔️" : "✖️") + e.title,
-      (!e.gmValue ? "✔️" : "✖️") + e.title,
+      (e.gmValue ? '✔️' : '✖️') + e.title,
+      (!e.gmValue ? '✔️' : '✖️') + e.title,
       () => {
         e.gmValue = !e.gmValue;
         GM_setValue(e.gmKey, e.gmValue);
@@ -62,51 +62,49 @@
     );
   });
 
-  window.addEventListener("load", () => {
+  window.addEventListener('load', () => {
     const getById = (id) => document.getElementById(id);
 
     // 隐藏进入页面后的登录弹窗
     new MutationObserver((mutations, ob) => {
-      const mask = getById("HUYA-UDBSdkLgn");
+      const mask = getById('HUYA-UDBSdkLgn');
       if (mask) {
         // 插入登录框后则只监听该元素的变更
         new MutationObserver((records, mob) => {
-          if (mask?.style.display === "block") {
-            mask.style.display = "none";
+          if (mask?.style.display === 'block') {
+            mask.style.display = 'none';
             mob.disconnect();
           }
         }).observe(mask, {
-          attributes: true,
+          attributes: true
         });
 
         // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
         try {
-          getById("hy-video").srcObject.active = false;
+          getById('hy-video').srcObject.active = false;
         } catch (e) {}
         ob.disconnect();
 
         // 解锁需要登录的清晰度
-        const $vtList = $("#player-ctrl-wrap .player-videotype-list");
+        const $vtList = $('#player-ctrl-wrap .player-videotype-list');
         const unlockRES = () => {
-          $vtList
-            .children(":has(.bitrate-right-btn.login-enjoy-btn)")
-            .each((i, e) => {
-              $(e).data("data").status = 0;
-              // 若启用了自动最高画质
-              i === 0 && toggles[0].gmValue && e.click();
-            });
+          $vtList.children(':has(.bitrate-right-btn.login-enjoy-btn)').each((i, e) => {
+            $(e).data('data').status = 0;
+            // 若启用了自动最高画质
+            i === 0 && toggles[0].gmValue && e.click();
+          });
         };
         new MutationObserver(unlockRES).observe($vtList[0], {
           attributes: false,
           childList: true,
-          subtree: false,
+          subtree: false
         });
         unlockRES();
       }
     }).observe(document.body, {
       attributes: false,
       childList: true,
-      subtree: false,
+      subtree: false
     });
 
     // 观察节点自动点击播放模式
