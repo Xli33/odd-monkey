@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.2.1
+// @version     1.2.2
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
