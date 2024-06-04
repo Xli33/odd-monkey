@@ -67,7 +67,7 @@
 
     // 隐藏进入页面后的登录弹窗
     new MutationObserver((mutations, ob) => {
-      const mask = getById("UDBSdkLgn");
+      const mask = getById("HUYA-UDBSdkLgn");
       if (mask) {
         // 插入登录框后则只监听该元素的变更
         new MutationObserver((records, mob) => {
