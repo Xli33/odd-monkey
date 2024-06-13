@@ -2,10 +2,11 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.2.2
+// @version     1.3.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
+// // @include     /^https:\/\/www\.huya\.com\/[^/]+\/?$/
 // @run-at      document-end
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -14,7 +15,6 @@
 // @supportURL  https://greasyfork.org/zh-CN/scripts/477947
 // @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
-
 (() => {
   'use strict';
 
@@ -48,6 +48,18 @@
       title: '自动最高画质',
       gmKey: 'autoBestRES',
       gmValue: GM_getValue('autoBestRES')
+    },
+    {
+      id: 2,
+      title: '单击/空格控制播放/暂停',
+      gmKey: 'clickToPlay',
+      gmValue: GM_getValue('clickToPlay', true)
+    },
+    {
+      id: 3,
+      title: '中键切换全屏',
+      gmKey: 'midClickToFullscreen',
+      gmValue: GM_getValue('midClickToFullscreen', true)
     }
   ];
   toggles.forEach((e) => {
@@ -68,38 +80,78 @@
     // 隐藏进入页面后的登录弹窗
     new MutationObserver((mutations, ob) => {
       const mask = getById('HUYA-UDBSdkLgn');
-      if (mask) {
-        // 插入登录框后则只监听该元素的变更
-        new MutationObserver((records, mob) => {
-          if (mask?.style.display === 'block') {
-            mask.style.display = 'none';
-            mob.disconnect();
-          }
-        }).observe(mask, {
-          attributes: true
-        });
+      if (!mask) return;
 
-        // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
-        try {
-          getById('hy-video').srcObject.active = false;
-        } catch (e) {}
-        ob.disconnect();
-
-        // 解锁需要登录的清晰度
-        const $vtList = $('#player-ctrl-wrap .player-videotype-list');
-        const unlockRES = () => {
+      const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
+        unlockRES = () => {
           $vtList.children(':has(.bitrate-right-btn.login-enjoy-btn)').each((i, e) => {
             $(e).data('data').status = 0;
             // 若启用了自动最高画质
             i === 0 && toggles[0].gmValue && e.click();
           });
         };
-        new MutationObserver(unlockRES).observe($vtList[0], {
-          attributes: false,
-          childList: true,
-          subtree: false
+      const vid = getById('player-video');
+
+      // 插入登录框后则只监听该元素的变更
+      new MutationObserver((records, mob) => {
+        if (mask?.style.display === 'block') {
+          mask.style.display = 'none';
+          mob.disconnect();
+        }
+      }).observe(mask, {
+        attributes: true
+      });
+
+      // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
+      try {
+        getById('hy-video').srcObject.active = false;
+      } catch (e) {}
+      ob.disconnect();
+
+      // 解锁需要登录的清晰度
+      new MutationObserver(unlockRES).observe($vtList[0], {
+        attributes: false,
+        childList: true,
+        subtree: false
+      });
+      unlockRES();
+
+      // 添加部分播放器事件
+      // 单击/空格控制播放/暂停
+      if (toggles[1].gmValue) {
+        let isOneClick, tmp, tid;
+        // 判断是否触发虎牙播放器单击模拟的双击
+        vid.addEventListener('click', (e) => {
+          isOneClick = !tmp;
+          if (isOneClick) {
+            tmp = setTimeout(() => {
+              tmp = null;
+            }, 301);
+          }
         });
-        unlockRES();
+        vid.onclick = (e) => {
+          clearTimeout(tid);
+          if (!(getById('smartMenu_videoMenu')?.style.display === 'block')) {
+            tid = setTimeout(() => {
+              isOneClick && getById('player-btn').click();
+            }, 300);
+          }
+        };
+        document.onkeydown = (e) => {
+          if (e.code === 'Space' && !'INPUT TEXTAREA'.includes(e.target.nodeName)) {
+            e.preventDefault();
+            getById('player-btn').click();
+          }
+        };
+      }
+      // 中键切换全屏
+      if (toggles[2].gmValue) {
+        vid.onmousedown = (e) => e.preventDefault();
+        vid.onauxclick = (e) => {
+          if (e.button === 1) {
+            getById('player-fullscreen-btn').click();
+          }
+        };
       }
     }).observe(document.body, {
       attributes: false,
