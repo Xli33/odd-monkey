@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.6.0](https://github.com/Xli33/odd-monkey/compare/v1.5.2...v1.6.0) (2024-06-13)
+
+
+### Features
+
+* 虎牙新增默认启用选项：单击/空格控制播放/暂停，中键切换全屏 ([bb67af0](https://github.com/Xli33/odd-monkey/commit/bb67af0e00d003129cfdecd27d2637617a08ed34))
+
 ## [1.5.2](https://github.com/Xli33/odd-monkey/compare/v1.5.1...v1.5.2) (2024-06-04)
 
 
