@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.7.0](https://github.com/Xli33/odd-monkey/compare/v1.6.0...v1.7.0) (2024-06-18)
+
+
+### Features
+
+* 虎牙支持回车键切换全屏&优化 ([6cccfaf](https://github.com/Xli33/odd-monkey/commit/6cccfaf2ddb5487b9a7ae79126ace09cd3421946))
+
 ## [1.6.0](https://github.com/Xli33/odd-monkey/compare/v1.5.2...v1.6.0) (2024-06-13)
 
 
