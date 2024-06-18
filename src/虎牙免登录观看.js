@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.3.0
+// @version     1.4.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -15,6 +15,7 @@
 // @supportURL  https://greasyfork.org/zh-CN/scripts/477947
 // @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
+
 (() => {
   'use strict';
 
@@ -57,7 +58,7 @@
     },
     {
       id: 3,
-      title: '中键切换全屏',
+      title: '中键/回车切换全屏',
       gmKey: 'midClickToFullscreen',
       gmValue: GM_getValue('midClickToFullscreen', true)
     }
@@ -90,7 +91,6 @@
             i === 0 && toggles[0].gmValue && e.click();
           });
         };
-      const vid = getById('player-video');
 
       // 插入登录框后则只监听该元素的变更
       new MutationObserver((records, mob) => {
@@ -117,42 +117,49 @@
       unlockRES();
 
       // 添加部分播放器事件
-      // 单击/空格控制播放/暂停
-      if (toggles[1].gmValue) {
-        let isOneClick, tmp, tid;
-        // 判断是否触发虎牙播放器单击模拟的双击
-        vid.addEventListener('click', (e) => {
-          isOneClick = !tmp;
-          if (isOneClick) {
-            tmp = setTimeout(() => {
-              tmp = null;
-            }, 301);
-          }
-        });
-        vid.onclick = (e) => {
-          clearTimeout(tid);
-          if (!(getById('smartMenu_videoMenu')?.style.display === 'block')) {
-            tid = setTimeout(() => {
-              isOneClick && getById('player-btn').click();
-            }, 300);
-          }
-        };
-        document.onkeydown = (e) => {
-          if (e.code === 'Space' && !'INPUT TEXTAREA'.includes(e.target.nodeName)) {
-            e.preventDefault();
-            getById('player-btn').click();
-          }
-        };
-      }
-      // 中键切换全屏
-      if (toggles[2].gmValue) {
-        vid.onmousedown = (e) => e.preventDefault();
-        vid.onauxclick = (e) => {
-          if (e.button === 1) {
-            getById('player-fullscreen-btn').click();
-          }
-        };
-      }
+      setTimeout(() => {
+        const vid = getById('player-video');
+
+        // 单击/空格控制播放/暂停
+        if (toggles[1].gmValue) {
+          let isOneClick, tmp, tid;
+          // 判断是否触发虎牙播放器单击模拟的双击
+          vid.addEventListener('click', (e) => {
+            isOneClick = !tmp;
+            if (isOneClick) {
+              tmp = setTimeout(() => {
+                tmp = null;
+              }, 301);
+            }
+          });
+          vid.onclick = (e) => {
+            clearTimeout(tid);
+            if (!(getById('smartMenu_videoMenu')?.style.display === 'block')) {
+              tid = setTimeout(() => {
+                isOneClick && getById('player-btn').click();
+              }, 300);
+            }
+          };
+          document.onkeyup = (e) => {
+            if ('INPUT TEXTAREA'.includes(e.target.nodeName)) return;
+            if (e.key === 'Enter') {
+              getById('player-fullscreen-btn').click();
+              return;
+            }
+            if (e.code === 'Space') {
+              e.preventDefault();
+              getById('player-btn').click();
+            }
+          };
+        }
+        // 中键切换全屏
+        if (toggles[2].gmValue) {
+          vid.onmousedown = (e) => e.preventDefault();
+          vid.onauxclick = (e) => {
+            e.button === 1 && getById('player-fullscreen-btn').click();
+          };
+        }
+      });
     }).observe(document.body, {
       attributes: false,
       childList: true,
