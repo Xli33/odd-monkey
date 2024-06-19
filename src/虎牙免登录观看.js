@@ -140,24 +140,24 @@
               }, 300);
             }
           };
-          document.onkeyup = (e) => {
-            if ('INPUT TEXTAREA'.includes(e.target.nodeName)) return;
-            if (e.key === 'Enter') {
-              getById('player-fullscreen-btn').click();
-              return;
-            }
-            if (e.code === 'Space') {
+          document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space' && !'INPUT TEXTAREA'.includes(e.target.nodeName)) {
               e.preventDefault();
               getById('player-btn').click();
             }
-          };
+          });
         }
-        // 中键切换全屏
+        // 中键/回车切换全屏
         if (toggles[2].gmValue) {
           vid.onmousedown = (e) => e.preventDefault();
           vid.onauxclick = (e) => {
             e.button === 1 && getById('player-fullscreen-btn').click();
           };
+          document.addEventListener('keyup', (e) => {
+            e.key === 'Enter' &&
+              !'INPUT TEXTAREA'.includes(e.target.nodeName) &&
+              getById('player-fullscreen-btn').click();
+          });
         }
       });
     }).observe(document.body, {
