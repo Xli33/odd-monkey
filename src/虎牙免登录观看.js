@@ -134,7 +134,8 @@
           });
           vid.onclick = (e) => {
             clearTimeout(tid);
-            if (!(getById('smartMenu_videoMenu')?.style.display === 'block')) {
+            const arr = ['smartMenu_videoMenu', 'player-danmu-report'];
+            if (arr.every((e) => !(getById(e)?.style.display === 'block'))) {
               tid = setTimeout(() => {
                 isOneClick && getById('player-btn').click();
               }, 300);
