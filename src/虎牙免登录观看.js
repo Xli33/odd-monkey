@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.4.0
+// @version     1.5.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -94,7 +94,7 @@
 
       // 插入登录框后则只监听该元素的变更
       new MutationObserver((records, mob) => {
-        if (mask?.style.display === 'block') {
+        if (mask?.style.display !== 'none') {
           mask.style.display = 'none';
           mob.disconnect();
         }
@@ -119,6 +119,21 @@
       // 添加部分播放器事件
       setTimeout(() => {
         const vid = getById('player-video');
+        let flag = null,
+          tid = null;
+
+        getById('player-mouse-event-wrap').onmousemove = function (e) {
+          if (flag) return;
+          flag = true;
+          clearTimeout(tid);
+          this.style.cursor = '';
+          tid = setTimeout(() => {
+            this.style.cursor = 'none';
+          }, 3000);
+          setTimeout(() => {
+            flag = null;
+          }, 1000);
+        };
 
         // 单击/空格控制播放/暂停
         if (toggles[1].gmValue) {
