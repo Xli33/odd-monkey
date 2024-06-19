@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.8.0](https://github.com/Xli33/odd-monkey/compare/v1.7.0...v1.8.0) (2024-06-19)
+
+
+### Features
+
+* 鼠标指针在视频处发生位置变化后停留3秒则自动隐藏 ([e8abfb6](https://github.com/Xli33/odd-monkey/commit/e8abfb6a21a79ec289ba0399e1d043249b438296))
+* 优化左键单击：出现弹幕菜单后，不会触发相应事件以避免不必要的暂停 ([4f897f2](https://github.com/Xli33/odd-monkey/commit/4f897f20284af71d5f31f204b88ea7fea0f1f55c))
+
+
+### Bug Fixes
+
+* 修复回车键事件未由对应选项控制 ([86aa531](https://github.com/Xli33/odd-monkey/commit/86aa531ecc92bd899cc2a180aafb6adf3e124199))
+
 ## [1.7.0](https://github.com/Xli33/odd-monkey/compare/v1.6.0...v1.7.0) (2024-06-18)
 
 
