@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.9.0](https://github.com/Xli33/odd-monkey/compare/v1.8.0...v1.9.0) (2024-07-15)
+
+
+### Features
+
+* 跟进适配b站非番剧评论区（番剧页沿用旧策略） ([d2cac8b](https://github.com/Xli33/odd-monkey/commit/d2cac8b12c4ce248ba886a22520d3409ab3bbe25))
+
 ## [1.8.0](https://github.com/Xli33/odd-monkey/compare/v1.7.0...v1.8.0) (2024-06-19)
 
 
