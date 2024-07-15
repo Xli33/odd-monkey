@@ -2,7 +2,7 @@
 // @name        躲啥躲
 // @description b站PC端视频/番剧等评论归属显形，点击可调整文字颜色
 // @author      (σ｀д′)σ
-// @version     1.2.0
+// @version     1.2.1
 // @namespace   https://greasyfork.org/zh-CN/scripts/477707
 // @license     GPL-3.0-or-later
 // @match       *://www.bilibili.com/video/*
@@ -192,20 +192,21 @@
 
   // if comments exist
   new MutationObserver((mutations, ob) => {
-    if (elComment.querySelector('.reply-list')) {
+    const elReplyList = elComment.querySelector('.reply-list');
+    if (elReplyList) {
       ob.disconnect();
-      watchReply();
+      watchReply(elReplyList);
     }
   }).observe(elComment, {
     childList: true,
     subtree: true
   });
 
-  const watchReply = () => {
+  const watchReply = (elReplyList) => {
     // 防重复执行mutation
     let flag;
-    const elReplyList = getEl('.reply-list'),
-      { apiData } = elComment.children[0].__vue_app__.config.globalProperties.$store.state,
+    const { apiData } =
+        elComment.firstElementChild.__vue_app__.config.globalProperties.$store.state,
       id = '--' + Math.floor(Math.random() * 10000),
       labelClass = 'com-ip' + id;
 
