@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.5.0
+// @version     1.6.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -61,6 +61,12 @@
       title: '中键/回车切换全屏',
       gmKey: 'midClickToFullscreen',
       gmValue: GM_getValue('midClickToFullscreen', true)
+    },
+    {
+      id: 4,
+      title: '自动剧场模式',
+      gmKey: 'autoFullPage',
+      gmValue: GM_getValue('autoFullPage')
     }
   ];
   toggles.forEach((e) => {
@@ -74,138 +80,150 @@
       }
     );
   });
+  if (toggles[3].gmValue) {
+    document.body.classList.add('mode-page-theater');
+  }
+  // window.addEventListener('load', () => {
+  const getById = (id) => document.getElementById(id);
 
-  window.addEventListener('load', () => {
-    const getById = (id) => document.getElementById(id);
+  // 隐藏进入页面后的登录弹窗
+  new MutationObserver((mutations, ob) => {
+    const mask = getById('HUYA-UDBSdkLgn');
+    if (!mask) return;
 
-    // 隐藏进入页面后的登录弹窗
-    new MutationObserver((mutations, ob) => {
-      const mask = getById('HUYA-UDBSdkLgn');
-      if (!mask) return;
+    // setTimeout(() => {
+    //   const btn = document.getElementById('player-fullpage-btn');
+    //   btn.title = '退出剧场';
+    //   btn.classList.add('player-narrowpage');
+    //   btn.classList.remove('player-fullpage-btn');
+    // });
 
-      const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
-        unlockRES = () => {
-          $vtList.children(':has(.bitrate-right-btn.login-enjoy-btn)').each((i, e) => {
-            $(e).data('data').status = 0;
-            // 若启用了自动最高画质
-            i === 0 && toggles[0].gmValue && e.click();
-          });
-        };
+    const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
+      unlockRES = () => {
+        $vtList.children(':has(.bitrate-right-btn.login-enjoy-btn)').each((i, e) => {
+          $(e).data('data').status = 0;
+          // 若启用了自动最高画质
+          i === 0 && toggles[0].gmValue && e.click();
+        });
+      };
 
-      // 插入登录框后则只监听该元素的变更
-      new MutationObserver((records, mob) => {
-        if (mask?.style.display !== 'none') {
-          mask.style.display = 'none';
-          mob.disconnect();
+    // 插入登录框后则只监听该元素的变更
+    new MutationObserver((records, mob) => {
+      if (mask?.style.display !== 'none') {
+        mask.style.display = 'none';
+        if (toggles[3].gmValue) {
+          getById('player-fullpage-btn').click();
         }
-      }).observe(mask, {
-        attributes: true
-      });
+        mob.disconnect();
+      }
+    }).observe(mask, {
+      attributes: true
+    });
 
-      // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
-      try {
-        getById('hy-video').srcObject.active = false;
-      } catch (e) {}
-      ob.disconnect();
+    // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
+    try {
+      getById('hy-video').srcObject.active = false;
+    } catch (e) {}
+    ob.disconnect();
 
-      // 解锁需要登录的清晰度
-      new MutationObserver(unlockRES).observe($vtList[0], {
-        attributes: false,
-        childList: true,
-        subtree: false
-      });
-      unlockRES();
-
-      // 添加部分播放器事件
-      setTimeout(() => {
-        const vid = getById('player-video');
-        let flag = null,
-          tid = null;
-
-        getById('player-mouse-event-wrap').onmousemove = function (e) {
-          if (flag) return;
-          flag = true;
-          clearTimeout(tid);
-          this.style.cursor = '';
-          tid = setTimeout(() => {
-            this.style.cursor = 'none';
-          }, 3000);
-          setTimeout(() => {
-            flag = null;
-          }, 1000);
-        };
-
-        // 单击/空格控制播放/暂停
-        if (toggles[1].gmValue) {
-          let isOneClick, tmp, tid;
-          // 判断是否触发虎牙播放器单击模拟的双击
-          vid.addEventListener('click', (e) => {
-            isOneClick = !tmp;
-            if (isOneClick) {
-              tmp = setTimeout(() => {
-                tmp = null;
-              }, 301);
-            }
-          });
-          vid.onclick = (e) => {
-            clearTimeout(tid);
-            const arr = ['smartMenu_videoMenu', 'player-danmu-report'];
-            if (arr.every((e) => !(getById(e)?.style.display === 'block'))) {
-              tid = setTimeout(() => {
-                isOneClick && getById('player-btn').click();
-              }, 300);
-            }
-          };
-          document.addEventListener('keyup', (e) => {
-            if (e.code === 'Space' && !'INPUT TEXTAREA'.includes(e.target.nodeName)) {
-              e.preventDefault();
-              getById('player-btn').click();
-            }
-          });
-        }
-        // 中键/回车切换全屏
-        if (toggles[2].gmValue) {
-          vid.onmousedown = (e) => e.preventDefault();
-          vid.onauxclick = (e) => {
-            e.button === 1 && getById('player-fullscreen-btn').click();
-          };
-          document.addEventListener('keyup', (e) => {
-            e.key === 'Enter' &&
-              !'INPUT TEXTAREA'.includes(e.target.nodeName) &&
-              getById('player-fullscreen-btn').click();
-          });
-        }
-      });
-    }).observe(document.body, {
+    // 解锁需要登录的清晰度
+    new MutationObserver(unlockRES).observe($vtList[0], {
       attributes: false,
       childList: true,
       subtree: false
     });
+    unlockRES();
 
-    // 观察节点自动点击播放模式
-    // function autoPlay() {
-    //   GM_addStyle("div#UDBSdkLgn{z-index: -1;}");
-    //   const targetNode =
-    //     getById("player-ctrl-wrap").querySelector(".player-play-big");
+    // 添加部分播放器事件
+    setTimeout(() => {
+      const vid = getById('player-video');
+      let flag = null,
+        tid = null;
 
-    //   new MutationObserver((mutationsList, ob) => {
-    //     // console.log(mutationsList)
-    //     if (
-    //       mutationsList[0].type !== "attributes" ||
-    //       targetNode.style.display === "none"
-    //     )
-    //       return;
-    //     const mask = getById("UDBSdkLgn");
-    //     if (mask.style.display === "block") {
-    //       targetNode.click();
-    //       mask.style.display = "none";
-    //       // console.log('自动续播成功')
-    //     }
-    //   }).observe(targetNode, {
-    //     attributes: true,
-    //     childList: false,
-    //     subtree: false,
-    //   });
-    // }
+      getById('player-mouse-event-wrap').onmousemove = function (e) {
+        if (flag) return;
+        flag = true;
+        clearTimeout(tid);
+        this.style.cursor = '';
+        tid = setTimeout(() => {
+          this.style.cursor = 'none';
+        }, 3000);
+        setTimeout(() => {
+          flag = null;
+        }, 1000);
+      };
+
+      // 单击/空格控制播放/暂停
+      if (toggles[1].gmValue) {
+        let isOneClick, tmp, tid;
+        // 判断是否触发虎牙播放器单击模拟的双击
+        vid.addEventListener('click', (e) => {
+          isOneClick = !tmp;
+          if (isOneClick) {
+            tmp = setTimeout(() => {
+              tmp = null;
+            }, 301);
+          }
+        });
+        vid.onclick = (e) => {
+          clearTimeout(tid);
+          const arr = ['smartMenu_videoMenu', 'player-danmu-report'];
+          if (arr.every((e) => !(getById(e)?.style.display === 'block'))) {
+            tid = setTimeout(() => {
+              isOneClick && getById('player-btn').click();
+            }, 300);
+          }
+        };
+        document.addEventListener('keyup', (e) => {
+          if (e.code === 'Space' && !'INPUT TEXTAREA'.includes(e.target.nodeName)) {
+            e.preventDefault();
+            getById('player-btn').click();
+          }
+        });
+      }
+      // 中键/回车切换全屏
+      if (toggles[2].gmValue) {
+        vid.onmousedown = (e) => e.preventDefault();
+        vid.onauxclick = (e) => {
+          e.button === 1 && getById('player-fullscreen-btn').click();
+        };
+        document.addEventListener('keyup', (e) => {
+          e.key === 'Enter' &&
+            !'INPUT TEXTAREA'.includes(e.target.nodeName) &&
+            getById('player-fullscreen-btn').click();
+        });
+      }
+    });
+  }).observe(document.body, {
+    attributes: false,
+    childList: true,
+    subtree: false
   });
+
+  // 观察节点自动点击播放模式
+  // function autoPlay() {
+  //   GM_addStyle("div#UDBSdkLgn{z-index: -1;}");
+  //   const targetNode =
+  //     getById("player-ctrl-wrap").querySelector(".player-play-big");
+
+  //   new MutationObserver((mutationsList, ob) => {
+  //     // console.log(mutationsList)
+  //     if (
+  //       mutationsList[0].type !== "attributes" ||
+  //       targetNode.style.display === "none"
+  //     )
+  //       return;
+  //     const mask = getById("UDBSdkLgn");
+  //     if (mask.style.display === "block") {
+  //       targetNode.click();
+  //       mask.style.display = "none";
+  //       // console.log('自动续播成功')
+  //     }
+  //   }).observe(targetNode, {
+  //     attributes: true,
+  //     childList: false,
+  //     subtree: false,
+  //   });
+  // }
+  // });
 })();
