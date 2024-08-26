@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.10.0](https://github.com/Xli33/odd-monkey/compare/v1.9.0...v1.10.0) (2024-08-26)
+
+
+### Features
+
+* 虎牙免登录新增选项：自动剧场模式，默认关闭。并优化运行时机以免在网速不足时可能漏执行 ([4a17f16](https://github.com/Xli33/odd-monkey/commit/4a17f169986569edb49247b9044ff28136d38f97))
+
 ## [1.9.0](https://github.com/Xli33/odd-monkey/compare/v1.8.0...v1.9.0) (2024-07-15)
 
 
