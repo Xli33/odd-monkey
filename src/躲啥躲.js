@@ -2,7 +2,7 @@
 // @name        躲啥躲
 // @description b站PC端视频/番剧等评论归属显形，点击可调整文字颜色
 // @author      (σ｀д′)σ
-// @version     1.2.1
+// @version     1.2.2
 // @namespace   https://greasyfork.org/zh-CN/scripts/477707
 // @license     GPL-3.0-or-later
 // @match       *://www.bilibili.com/video/*
@@ -19,7 +19,7 @@
   const getEl = (name) => document.querySelector(name);
 
   // comment area
-  const elComment = getEl('#comment') || getEl('#comment-module');
+  const elComment = getEl('#commentapp') || getEl('#comment-module');
   if (!elComment) return;
 
   if (location.pathname.startsWith('/video/')) {
@@ -111,7 +111,7 @@
         const handleList = (arr) => {
           arr.forEach((e) => {
             e.setAttribute('exportparts', labelClass + ',' + colorClass);
-            observeOnce(e.shadowRoot, '#comment', (el) => {
+            observeOnce(e.shadowRoot, '#commentapp', (el) => {
               el.setAttribute('exportparts', labelClass + ',' + colorClass);
               observeOnce(el.shadowRoot, '#footer', (fel) => {
                 fel.firstElementChild.setAttribute('exportparts', labelClass + ',' + colorClass);
