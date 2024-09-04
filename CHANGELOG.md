@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.10.1](https://github.com/Xli33/odd-monkey/compare/v1.10.0...v1.10.1) (2024-09-04)
+
+
+### Bug Fixes
+
+* 跟进适配b站视频页 ([4297cfa](https://github.com/Xli33/odd-monkey/commit/4297cfa0ddc18869592ca84c235a14ddc41fd9ad))
+
 ## [1.10.0](https://github.com/Xli33/odd-monkey/compare/v1.9.0...v1.10.0) (2024-08-26)
 
 
