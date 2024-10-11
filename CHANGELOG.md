@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.0](https://github.com/Xli33/odd-monkey/compare/v1.10.1...v1.11.0) (2024-10-11)
+
+
+### Features
+
+* 新增脚本：简历刷刷 ([93b23a3](https://github.com/Xli33/odd-monkey/commit/93b23a3751e7928f1bddf0bafe1f1a7d4bd4017d))
+
 ## [1.10.1](https://github.com/Xli33/odd-monkey/compare/v1.10.0...v1.10.1) (2024-09-04)
 
 
