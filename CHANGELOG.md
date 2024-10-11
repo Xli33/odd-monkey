@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.1](https://github.com/Xli33/odd-monkey/compare/v1.11.0...v1.11.1) (2024-10-11)
+
+
+### Bug Fixes
+
+* 修正简历刷刷地址&更名 ([e8c84aa](https://github.com/Xli33/odd-monkey/commit/e8c84aa8ae2c14ef1be85c49cece84fa7cfc9063))
+
 ## [1.11.0](https://github.com/Xli33/odd-monkey/compare/v1.10.1...v1.11.0) (2024-10-11)
 
 
