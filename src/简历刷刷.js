@@ -3,7 +3,7 @@
 // @description 在生效时段内自动触发刷新简历功能，适用于智联、51job、猎聘，支持设置执行间隔等
 // @author      (σ｀д′)σ
 // @version     0.1
-// @namespace   https://greasyfork.org/zh-CN/scripts/477947
+// @namespace   https://greasyfork.org/zh-CN/scripts/512234
 // @license     GPL-3.0-or-later
 // @match       https://www.zhaopin.com/
 // @match       https://www.51job.com/
@@ -16,7 +16,7 @@
 // @grant       GM_addStyle
 // @grant       GM_addValueChangeListener
 // @require https://unpkg.com/sweetalert2@11.14.2/dist/sweetalert2.all.min.js
-// @supportURL  https://greasyfork.org/zh-CN/scripts/477947
+// @supportURL  https://greasyfork.org/zh-CN/scripts/512234
 // @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
 
