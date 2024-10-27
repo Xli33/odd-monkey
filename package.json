@@ -4,7 +4,7 @@
   "description": "strange strange & strange web scripts on tampermonkey+violentmonkey",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "release": "commit-and-tag-version"
   },
   "repository": {
