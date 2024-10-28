@@ -140,7 +140,7 @@
       let flag = null,
         tid = null;
 
-      getById('player-mouse-event-wrap').onmousemove = function (e) {
+      getById('player-mouse-event-wrap').onmousemove = function () {
         if (flag) return;
         flag = true;
         clearTimeout(tid);
@@ -157,7 +157,7 @@
       if (toggles[1].gmValue) {
         let isOneClick, tmp, tid;
         // 判断是否触发虎牙播放器单击模拟的双击
-        vid.addEventListener('click', (e) => {
+        vid.addEventListener('click', () => {
           isOneClick = !tmp;
           if (isOneClick) {
             tmp = setTimeout(() => {
@@ -165,7 +165,7 @@
             }, 301);
           }
         });
-        vid.onclick = (e) => {
+        vid.onclick = () => {
           clearTimeout(tid);
           const arr = ['smartMenu_videoMenu', 'player-danmu-report'];
           if (arr.every((e) => !(getById(e)?.style.display === 'block'))) {

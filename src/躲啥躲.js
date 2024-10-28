@@ -132,7 +132,7 @@
                         'exportparts',
                         labelClass + ',' + colorClass
                       );
-                      new MutationObserver((mutations, ob) => {
+                      new MutationObserver(() => {
                         el.firstElementChild.shadowRoot.querySelector(`>label[part=${labelClass}]`)
                           ? el.firstElementChild.shadowRoot.firstElementChild.replaceWith(
                               getExtraEle(el.firstElementChild.data.reply_control.location)
@@ -148,7 +148,7 @@
                   });
                 };
 
-                new MutationObserver((mutations, ob) => {
+                new MutationObserver((mutations) => {
                   handleList(
                     mutations
                       .filter((e) => e.addedNodes[0]?.nodeName === 'BILI-COMMENT-REPLY-RENDERER')
@@ -174,7 +174,7 @@
           });
         };
 
-        new MutationObserver((mutations, ob) => {
+        new MutationObserver((mutations) => {
           handleList(
             mutations
               .filter((e) => e.addedNodes[0]?.nodeName === 'BILI-COMMENT-THREAD-RENDERER')
@@ -250,7 +250,7 @@
     };
 
     // 观察评论区节点并给新评论增加ip等额外信息展示
-    new MutationObserver((mutations, observer) => {
+    new MutationObserver((mutations) => {
       if (flag) {
         flag = null;
         return;
