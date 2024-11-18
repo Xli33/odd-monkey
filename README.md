@@ -18,7 +18,7 @@
 
 - ~~g-res —— 搜索结果优化~~
 
-<br>
+### 拒绝滥用 *scoped style* ，下下策罢惹🙄 <br> say "No!" to the abuse of *scoped style*, which be the worst🙄
 
 <img src='assets/classic.gif'>
 
