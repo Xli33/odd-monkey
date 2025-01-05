@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.6.0
+// @version     1.6.1
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -19,7 +19,7 @@
 (() => {
   'use strict';
 
-  // 禁止虎牙篡改原生console
+  // 禁止篡改console
   // Object.freeze(console);
 
   // 更改菜单选项
@@ -100,7 +100,7 @@
 
     const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
       unlockRES = () => {
-        $vtList.children(':has(.bitrate-right-btn.login-enjoy-btn)').each((i, e) => {
+        $vtList.children(':has(.bitrate-right-btn.common-enjoy-btn)').each((i, e) => {
           $(e).data('data').status = 0;
           // 若启用了自动最高画质
           i === 0 && toggles[0].gmValue && e.click();
@@ -123,10 +123,12 @@
     // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
     try {
       getById('hy-video').srcObject.active = false;
-    } catch (e) {}
+    } catch (e) {
+      // alert('尝试无限制播放失败，可能需要刷新页面或切换线路。异常：\n' + e)
+    }
     ob.disconnect();
 
-    // 解锁需要登录的清晰度
+    // unlock res
     new MutationObserver(unlockRES).observe($vtList[0], {
       attributes: false,
       childList: true,
