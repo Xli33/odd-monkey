@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.11.2](https://github.com/Xli33/odd-monkey/compare/v1.11.1...v1.11.2) (2025-01-05)
+
+
+### Bug Fixes
+
+* 调整husky回prepare ([306787b](https://github.com/Xli33/odd-monkey/commit/306787b67bc22fc9129d6b17c5caf2c314e9cb5f))
+* 修复虎牙免登录观看限定画质 ([d088b6b](https://github.com/Xli33/odd-monkey/commit/d088b6b51950161687b2a23db79873efa4a4da54))
+
 ## [1.11.1](https://github.com/Xli33/odd-monkey/compare/v1.11.0...v1.11.1) (2024-10-11)
 
 
