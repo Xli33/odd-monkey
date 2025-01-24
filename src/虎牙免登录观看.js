@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.6.1
+// @version     1.6.2
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -111,9 +111,9 @@
     new MutationObserver((records, mob) => {
       if (mask?.style.display !== 'none') {
         mask.style.display = 'none';
-        if (toggles[3].gmValue) {
-          getById('player-fullpage-btn').click();
-        }
+        // if (toggles[3].gmValue) {
+        //   getById('player-fullpage-btn').click();
+        // }
         mob.disconnect();
       }
     }).observe(mask, {
@@ -122,6 +122,14 @@
 
     // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
     try {
+      if (toggles[3].gmValue) {
+        const pfBtn = getById('player-fullpage-btn');
+        const tid = setInterval(() => {
+          pfBtn.classList.contains('player-narrowpage') ? clearInterval(tid) : pfBtn.click();
+        }, 500);
+        // getById('player-fullpage-btn').className="player-narrowpage"
+        // getById('player-fullpage-btn').title="退出剧场"
+      }
       getById('hy-video').srcObject.active = false;
     } catch (e) {
       // alert('尝试无限制播放失败，可能需要刷新页面或切换线路。异常：\n' + e)
