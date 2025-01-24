@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.3](https://github.com/Xli33/odd-monkey/compare/v1.11.2...v1.11.3) (2025-01-24)
+
+
+### Bug Fixes
+
+* 优化自动剧场模式 ([e0c31a8](https://github.com/Xli33/odd-monkey/commit/e0c31a85d3c62bf0124058493ac06c70b0ae49e7))
+
 ## [1.11.2](https://github.com/Xli33/odd-monkey/compare/v1.11.1...v1.11.2) (2025-01-05)
 
 
