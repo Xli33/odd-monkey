@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.4](https://github.com/Xli33/odd-monkey/compare/v1.11.3...v1.11.4) (2025-02-05)
+
+
+### Bug Fixes
+
+* 修复当没有登录画质时，不会自动选中最高画质 ([793c96d](https://github.com/Xli33/odd-monkey/commit/793c96d1b0a05876ef8810642277c2448aa4afce))
+
 ## [1.11.3](https://github.com/Xli33/odd-monkey/compare/v1.11.2...v1.11.3) (2025-01-24)
 
 

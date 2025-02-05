@@ -1,6 +1,6 @@
 {
   "name": "odd-monkey",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "strange strange & strange web scripts on tampermonkey+violentmonkey",
   "main": "index.js",
   "scripts": {
