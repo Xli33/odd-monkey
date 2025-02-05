@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.6.2
+// @version     1.6.3
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -100,11 +100,14 @@
 
     const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
       unlockRES = () => {
-        $vtList.children(':has(.bitrate-right-btn.common-enjoy-btn)').each((i, e) => {
-          $(e).data('data').status = 0;
-          // 若启用了自动最高画质
-          i === 0 && toggles[0].gmValue && e.click();
-        });
+        const $highRes = $vtList.children(':has(.bitrate-right-btn.common-enjoy-btn)');
+        $highRes.length
+          ? $highRes.each((i, e) => {
+              $(e).data('data').status = 0;
+              // 若启用了自动最高画质
+              i === 0 && toggles[0].gmValue && e.click();
+            })
+          : toggles[0].gmValue && $vtList.children().length > 1 && $vtList.children()[0].click();
       };
 
     // 插入登录框后则只监听该元素的变更
