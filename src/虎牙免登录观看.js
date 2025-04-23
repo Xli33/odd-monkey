@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.6.3
+// @version     1.7.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       *://www.huya.com/*
@@ -12,6 +12,7 @@
 // @grant       GM_setValue
 // @grant       GM_registerMenuCommand
 // @grant       GM_unregisterMenuCommand
+// @grant       GM_addStyle
 // @supportURL  https://greasyfork.org/zh-CN/scripts/477947
 // @homepageURL https://github.com/Xli33/odd-monkey
 // ==/UserScript==
@@ -41,6 +42,45 @@
       registerToggle(id, offCaption, onCaption, onClick);
     });
   }
+  // 注册常规菜单项
+  function addMenuItem(item) {
+    if (item.id !== GM_registerMenuCommand(item.title, () => item.click(), { id: item.id })) {
+      GM_unregisterMenuCommand(item.title);
+      GM_registerMenuCommand(item.title, () => item.click());
+    }
+  }
+  function addModal(title, body, persist) {
+    const dialog = document.createElement('dialog');
+    dialog.innerHTML = `<div><p>${title}</p>${body}<div style='text-align:right'><button>确定</button> <button>取消</button></div></div>`;
+    const btns = dialog.querySelectorAll('button');
+    dialog.children[0].onclick = (e) => e.stopPropagation();
+    dialog.onclick = btns[1].onclick = () => {
+      dialog.oncancel?.();
+      dialog.close();
+    };
+    btns[0].onclick = () => {
+      dialog.onconfirm?.();
+      dialog.close();
+    };
+    Object.defineProperty(dialog, 'title', {
+      get() {
+        return this.children[0].children[0].textContent;
+      },
+      set(text) {
+        this.children[0].children[0].innerText = text;
+      }
+    });
+    if (!persist) {
+      dialog.onclose = () => dialog.remove();
+    }
+    document.body.append(dialog);
+    return dialog;
+  }
+
+  const Modal = addModal('', '<input type=number min=0 step=.5 />', true);
+  Modal.onclose = () => {
+    Modal.querySelector('input').value = '';
+  };
 
   // 待注册
   const toggles = [
@@ -67,6 +107,23 @@
       title: '自动剧场模式',
       gmKey: 'autoFullPage',
       gmValue: GM_getValue('autoFullPage')
+    },
+    {
+      id: 5,
+      title: '屏蔽视频下方礼物栏',
+      gmKey: 'hideGiftBar',
+      gmValue: GM_getValue('hideGiftBar'),
+      click() {
+        if (this.gmValue) {
+          this.css = GM_addStyle(
+            '#player-ctrl-wrap:not(.showup){opacity:0}#player-gift-wrap{visibility:hidden;}#player-wrap{min-height:100%}#player-ctrl-wrap{bottom:0!important}'
+          );
+          getById('player-ctrl-wrap').classList.add('showup');
+          return;
+        }
+        getById('player-ctrl-wrap').classList.remove('showup');
+        this.css?.remove();
+      }
     }
   ];
   toggles.forEach((e) => {
@@ -76,9 +133,30 @@
       (!e.gmValue ? '✔️' : '✖️') + e.title,
       () => {
         e.gmValue = !e.gmValue;
+        e.click?.(e.gmValue);
         GM_setValue(e.gmKey, e.gmValue);
       }
     );
+  });
+  const menu = [
+    {
+      id: 6,
+      title: '自动切换画质延迟',
+      gmKey: 'autoBestRESDelay',
+      gmValue: GM_getValue('autoBestRESDelay', 0),
+      click() {
+        Modal.title = '调整自动切换画质的延迟，单位：秒(s)，留空无延迟\n当前延迟：' + this.gmValue;
+        Modal.showModal();
+        Modal.onconfirm = () => {
+          const delay = +Modal.querySelector('input').value;
+          this.gmValue = isNaN(delay) ? 0 : delay;
+          GM_setValue(this.gmKey, this.gmValue);
+        };
+      }
+    }
+  ];
+  menu.forEach((e) => {
+    addMenuItem(e);
   });
   if (toggles[3].gmValue) {
     document.body.classList.add('mode-page-theater');
@@ -98,6 +176,9 @@
     //   btn.classList.remove('player-fullpage-btn');
     // });
 
+    if (toggles[4].gmValue) {
+      toggles[4].click();
+    }
     const $vtList = $('#player-ctrl-wrap .player-videotype-list'),
       unlockRES = () => {
         const $highRes = $vtList.children(':has(.bitrate-right-btn.common-enjoy-btn)');
@@ -105,7 +186,7 @@
           ? $highRes.each((i, e) => {
               $(e).data('data').status = 0;
               // 若启用了自动最高画质
-              i === 0 && toggles[0].gmValue && e.click();
+              i === 0 && toggles[0].gmValue && setTimeout(() => e.click(), menu[0].gmValue * 1000);
             })
           : toggles[0].gmValue && $vtList.children().length > 1 && $vtList.children()[0].click();
       };
@@ -158,9 +239,15 @@
         flag = true;
         clearTimeout(tid);
         this.style.cursor = '';
+        if (toggles[4].gmValue) {
+          getById('player-ctrl-wrap').classList.add('showup');
+        }
         tid = setTimeout(() => {
           this.style.cursor = 'none';
-        }, 3000);
+          if (toggles[4].gmValue) {
+            getById('player-ctrl-wrap').classList.remove('showup');
+          }
+        }, 5000);
         setTimeout(() => {
           flag = null;
         }, 1000);
