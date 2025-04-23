@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.12.0](https://github.com/Xli33/odd-monkey/compare/v1.11.4...v1.12.0) (2025-04-23)
+
+
+### Features
+
+* 虎牙免登录新增选项：屏蔽视频下方礼物栏&自动切换画质延迟 ([86f59b1](https://github.com/Xli33/odd-monkey/commit/86f59b11f45cfa4491f6ec58153dac3d9d1a2af5))
+
 ## [1.11.4](https://github.com/Xli33/odd-monkey/compare/v1.11.3...v1.11.4) (2025-02-05)
 
 
