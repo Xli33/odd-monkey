@@ -18,27 +18,21 @@
 
 - ~~g-res —— 搜索结果优化~~
 
-### 拒绝滥用 *scoped style* ，下下策罢惹🙄 <br> say "No!" to the abuse of *scoped style*, which be the worst🙄
+<br>
 
-<img src='assets/classic.gif'>
+> *no more abuse of scoped style, which be the worst😰😱*
 
-> ***随遇而安，material yyds（〃｀ 3′〃）***
+> *material yyds（〃｀ 3′〃）*
 
-> ***不假思索无脑跟风的形式主义：hi<br> let's：f x x k off╮（╯＿╰）╭***
+> *mindless formalism：😈<br> ：😰😱*
 
-> ***终究只是玩家(ˉ﹃ˉ)***
+> *simple going complicated not be that good😰😱*
 
-> ***万变不离其宗(￣o￣) . z Z***
+> *oh no self-comforting compatibility😰😱*
 
-> ***tells mvc, tells mvvm, tells mvw... tell u what(￣_￣|||)***
+> *no real perfection, only more suitable(￣﹃￣)*
 
-> ***简单东东复杂化，并不会显得狠高级厚(lll￢ω￢)***
-
-> ***自慰式兼容，恐怕自个儿都不会相信1.3秒噜(ˉ﹃ˉ)***
-
-> ***木有真正的完美，只有更合适罢惹=￣ω￣=***
-
-> ***或许在绝对面前，这这那那的终究只素浮云惹ಥ_ಥ***
+> *perhaps in the face of the absolute, all this and that is just a passing cloudԅ(¯﹃¯ԅ)*
 
 ## License
 
