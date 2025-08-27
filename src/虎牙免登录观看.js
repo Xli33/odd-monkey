@@ -1,27 +1,31 @@
 // ==UserScript==
 // @name        虎牙免登录观看
-// @description 虎牙未登录时不自动暂停，并隐藏进入页面后的登录框，解锁登录清晰度，若需要登录请勿使用！！
+// @description 优化未登录时的观看体验，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.7.0
+// @version     1.8.0
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
-// @match       *://www.huya.com/*
-// // @include     /^https:\/\/www\.huya\.com\/[^/]+\/?$/
-// @run-at      document-end
+// @match       https://www.huya.com/*
+// @exclude     https://www.huya.com/
+// @run-at      document-start
 // @grant       GM_getValue
 // @grant       GM_setValue
+// @grant       GM_deleteValue
 // @grant       GM_registerMenuCommand
 // @grant       GM_unregisterMenuCommand
 // @grant       GM_addStyle
 // @supportURL  https://greasyfork.org/zh-CN/scripts/477947
-// @homepageURL https://github.com/Xli33/odd-monkey
+// @homepageURL https://greasyfork.org/zh-CN/scripts/477947
 // ==/UserScript==
 
-(() => {
+window.addEventListener('load', () => {
   'use strict';
 
   // 禁止篡改console
   // Object.freeze(console);
+  if (GM_getValue('autoBestRESDelay') !== undefined) GM_deleteValue('autoBestRESDelay'); // 在vm上与GM_setValue(key)作用相同
+  const getById = (id) => document.getElementById(id);
+  if (!getById('videoContainer')) return;
 
   // 更改菜单选项
   function changeMenuItem(id, onCaption, offCaption, onClick) {
@@ -43,13 +47,13 @@
     });
   }
   // 注册常规菜单项
-  function addMenuItem(item) {
+  /* function addMenuItem(item) {
     if (item.id !== GM_registerMenuCommand(item.title, () => item.click(), { id: item.id })) {
       GM_unregisterMenuCommand(item.title);
       GM_registerMenuCommand(item.title, () => item.click());
     }
-  }
-  function addModal(title, body, persist) {
+  } */
+  /* function addModal(title, body, persist) {
     const dialog = document.createElement('dialog');
     dialog.innerHTML = `<div><p>${title}</p>${body}<div style='text-align:right'><button>确定</button> <button>取消</button></div></div>`;
     const btns = dialog.querySelectorAll('button');
@@ -75,12 +79,12 @@
     }
     document.body.append(dialog);
     return dialog;
-  }
+  } */
 
-  const Modal = addModal('', '<input type=number min=0 step=.5 />', true);
+  /* const Modal = addModal('', '<input type=number min=0 step=.5 />', true);
   Modal.onclose = () => {
     Modal.querySelector('input').value = '';
-  };
+  }; */
 
   // 待注册
   const toggles = [
@@ -138,43 +142,33 @@
       }
     );
   });
-  const menu = [
-    {
-      id: 6,
-      title: '自动切换画质延迟',
-      gmKey: 'autoBestRESDelay',
-      gmValue: GM_getValue('autoBestRESDelay', 0),
-      click() {
-        Modal.title = '调整自动切换画质的延迟，单位：秒(s)，留空无延迟\n当前延迟：' + this.gmValue;
-        Modal.showModal();
-        Modal.onconfirm = () => {
-          const delay = +Modal.querySelector('input').value;
-          this.gmValue = isNaN(delay) ? 0 : delay;
-          GM_setValue(this.gmKey, this.gmValue);
-        };
-      }
-    }
+  /*   const menu = [
+    // {
+    //   id: 6,
+    //   title: '自动切换画质延迟',
+    //   gmKey: 'autoBestRESDelay',
+    //   gmValue: GM_getValue('autoBestRESDelay', 0),
+    //   click() {
+    //     Modal.title = '调整自动切换画质的延迟，单位：秒(s)，留空无延迟\n当前延迟：' + this.gmValue;
+    //     Modal.showModal();
+    //     Modal.onconfirm = () => {
+    //       const delay = +Modal.querySelector('input').value;
+    //       this.gmValue = isNaN(delay) ? 0 : delay;
+    //       GM_setValue(this.gmKey, this.gmValue);
+    //     };
+    //   }
+    // }
   ];
   menu.forEach((e) => {
     addMenuItem(e);
-  });
+  }); */
   if (toggles[3].gmValue) {
     document.body.classList.add('mode-page-theater');
   }
-  // window.addEventListener('load', () => {
-  const getById = (id) => document.getElementById(id);
-
-  // 隐藏进入页面后的登录弹窗
+  // 隐藏进入页面后的登录弹窗。 ← 貌似不需要了，虎牙不会立马显示登录框了
   new MutationObserver((mutations, ob) => {
     const mask = getById('HUYA-UDBSdkLgn');
     if (!mask) return;
-
-    // setTimeout(() => {
-    //   const btn = document.getElementById('player-fullpage-btn');
-    //   btn.title = '退出剧场';
-    //   btn.classList.add('player-narrowpage');
-    //   btn.classList.remove('player-fullpage-btn');
-    // });
 
     if (toggles[4].gmValue) {
       toggles[4].click();
@@ -186,38 +180,35 @@
           ? $highRes.each((i, e) => {
               $(e).data('data').status = 0;
               // 若启用了自动最高画质
-              i === 0 && toggles[0].gmValue && setTimeout(() => e.click(), menu[0].gmValue * 1000);
+              i === 0 && toggles[0].gmValue && e.click(); // setTimeout(() => e.click(), menu[0].gmValue * 1000);
             })
           : toggles[0].gmValue && $vtList.children().length > 1 && $vtList.children()[0].click();
       };
 
-    // 插入登录框后则只监听该元素的变更
-    new MutationObserver((records, mob) => {
+    // 插入登录框后则只监听该元素的变更。
+    /* new MutationObserver((records, mob) => {
       if (mask?.style.display !== 'none') {
         mask.style.display = 'none';
-        // if (toggles[3].gmValue) {
-        //   getById('player-fullpage-btn').click();
-        // }
         mob.disconnect();
       }
     }).observe(mask, {
       attributes: true
-    });
+    }); */
 
     // 无限制播放，避免严格模式下对getter属性赋值导致异常中断
-    try {
-      if (toggles[3].gmValue) {
-        const pfBtn = getById('player-fullpage-btn');
-        const tid = setInterval(() => {
-          pfBtn.classList.contains('player-narrowpage') ? clearInterval(tid) : pfBtn.click();
-        }, 500);
-        // getById('player-fullpage-btn').className="player-narrowpage"
-        // getById('player-fullpage-btn').title="退出剧场"
-      }
-      getById('hy-video').srcObject.active = false;
-    } catch (e) {
-      // alert('尝试无限制播放失败，可能需要刷新页面或切换线路。异常：\n' + e)
+    // try {
+    if (toggles[3].gmValue) {
+      const pfBtn = getById('player-fullpage-btn');
+      const tid = setInterval(() => {
+        pfBtn.classList.contains('player-narrowpage') ? clearInterval(tid) : pfBtn.click();
+      }, 500);
+      // getById('player-fullpage-btn').className="player-narrowpage"
+      // getById('player-fullpage-btn').title="退出剧场"
     }
+    // getById('hy-video').srcObject.active = false;
+    // } catch (e) {
+    //   // alert('尝试无限制播放失败，可能需要刷新页面或切换线路。异常：\n' + e)
+    // }
     ob.disconnect();
 
     // unlock res
@@ -325,5 +316,4 @@
   //     subtree: false,
   //   });
   // }
-  // });
-})();
+});
