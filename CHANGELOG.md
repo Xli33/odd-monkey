@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.13.0](https://github.com/Xli33/odd-monkey/compare/v1.12.0...v1.13.0) (2025-08-27)
+
+
+### Features
+
+* 优化虎牙免登录观看 ([3038d78](https://github.com/Xli33/odd-monkey/commit/3038d7843a0a1fa7036e891adffbab6c9d136901))
+
 ## [1.12.0](https://github.com/Xli33/odd-monkey/compare/v1.11.4...v1.12.0) (2025-04-23)
 
 
