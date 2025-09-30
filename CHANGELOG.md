@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.13.1](https://github.com/Xli33/odd-monkey/compare/v1.13.0...v1.13.1) (2025-09-30)
+
+
+### Bug Fixes
+
+* 优化执行时机与观测逻辑 ([987c46c](https://github.com/Xli33/odd-monkey/commit/987c46c083ac917f02d1998056aa1d1dc0c68461))
+
 ## [1.13.0](https://github.com/Xli33/odd-monkey/compare/v1.12.0...v1.13.0) (2025-08-27)
 
 
