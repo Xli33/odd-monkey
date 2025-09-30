@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 优化未登录时的观看体验，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.8.0
+// @version     1.8.1
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       https://www.huya.com/*
@@ -18,14 +18,29 @@
 // @homepageURL https://greasyfork.org/zh-CN/scripts/477947
 // ==/UserScript==
 
-window.addEventListener('load', () => {
+/*
+ * 在vm中，未使用@grant或者@grant none，则sandbox不生效，此时window与unsafeWindow均指向页面window
+ * 若指定了@grant，则sandbox生效，此时window是页面window的代理，可访问自带属性但无法获取三方属性，unsafeWindow指向页面window
+ * 在vm中，@inject-into默认值为 auto，优先尝试注入到 page，再尝试 content
+ * 若@inject-into content，则依旧可访问页面DOM，但unsafeWindow指向content script的全局对象，故找不到页面window上的三方属性，如 HUYA_*
+ */
+
+/*
+ * 在tampermonkey中，若未设置@sandbox，则sandbox默认值为 raw，表示脚本优先注入到页面环境中
+ * 当设置@sandbox DOM时，则只能访问页面DOM
+ * 或许需要设置@grant unsafeWindow以访问unsafeWindow。若设置@grant none，则sandbox不生效
+ */
+
+// 目前脚本在vm和tm中均测试通过，且unsafeWindow都指向页面window，而window都是包装过的Proxy，无法获取页面window的三方属性如window.jQuery、window.HUYA_*等
+// 此时要么使用unsafeWindow.jQuery，要么直接访问全局属性（如脚本中直接使用 $ ）
+window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
   // 禁止篡改console
   // Object.freeze(console);
   if (GM_getValue('autoBestRESDelay') !== undefined) GM_deleteValue('autoBestRESDelay'); // 在vm上与GM_setValue(key)作用相同
   const getById = (id) => document.getElementById(id);
-  if (!getById('videoContainer')) return;
+  if (!getById('liveRoomObj')) return;
 
   // 更改菜单选项
   function changeMenuItem(id, onCaption, offCaption, onClick) {
@@ -102,7 +117,7 @@ window.addEventListener('load', () => {
     },
     {
       id: 3,
-      title: '中键/回车切换全屏',
+      title: '中键/回车切换全屏(火狐限制左键触发全屏',
       gmKey: 'midClickToFullscreen',
       gmValue: GM_getValue('midClickToFullscreen', true)
     },
@@ -167,8 +182,10 @@ window.addEventListener('load', () => {
   }
   // 隐藏进入页面后的登录弹窗。 ← 貌似不需要了，虎牙不会立马显示登录框了
   new MutationObserver((mutations, ob) => {
-    const mask = getById('HUYA-UDBSdkLgn');
-    if (!mask) return;
+    // const mask = getById('HUYA-UDBSdkLgn');
+    // if (!mask) return;
+    const video = getById('hy-video');
+    if (!video) return;
 
     if (toggles[4].gmValue) {
       toggles[4].click();
@@ -179,7 +196,7 @@ window.addEventListener('load', () => {
         $highRes.length
           ? $highRes.each((i, e) => {
               $(e).data('data').status = 0;
-              // 若启用了自动最高画质
+              // autoBestRES
               i === 0 && toggles[0].gmValue && e.click(); // setTimeout(() => e.click(), menu[0].gmValue * 1000);
             })
           : toggles[0].gmValue && $vtList.children().length > 1 && $vtList.children()[0].click();
@@ -221,7 +238,7 @@ window.addEventListener('load', () => {
 
     // 添加部分播放器事件
     setTimeout(() => {
-      const vid = getById('player-video');
+      const vid = mutations[0].target; // 此处观察的节点即getById('hy-video')
       let flag = null,
         tid = null;
 
@@ -285,7 +302,7 @@ window.addEventListener('load', () => {
         });
       }
     });
-  }).observe(document.body, {
+  }).observe(getById('player-video'), {
     attributes: false,
     childList: true,
     subtree: false
