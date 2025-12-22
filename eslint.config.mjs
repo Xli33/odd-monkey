@@ -3,7 +3,7 @@ import pluginJs from '@eslint/js';
 
 export default [
   {
-    ignores: ['.husky/']
+    ignores: ['.husky/', 'assets/']
   },
   {
     files: ['*.js'],
