@@ -2,7 +2,7 @@
 // @name        虎牙免登录观看
 // @description 优化未登录时的观看体验，若需要登录请勿使用！！
 // @author      (σ｀д′)σ
-// @version     1.8.1
+// @version     1.8.2
 // @namespace   https://greasyfork.org/zh-CN/scripts/477947
 // @license     GPL-3.0-or-later
 // @match       https://www.huya.com/*
@@ -216,8 +216,10 @@ window.addEventListener('DOMContentLoaded', () => {
     // try {
     if (toggles[3].gmValue) {
       const pfBtn = getById('player-fullpage-btn');
-      const tid = setInterval(() => {
-        pfBtn.classList.contains('player-narrowpage') ? clearInterval(tid) : pfBtn.click();
+      const tid = unsafeWindow.setInterval(() => {
+        pfBtn.classList.contains('player-narrowpage')
+          ? unsafeWindow.clearInterval(tid)
+          : pfBtn.click();
       }, 500);
       // getById('player-fullpage-btn').className="player-narrowpage"
       // getById('player-fullpage-btn').title="退出剧场"
@@ -237,7 +239,7 @@ window.addEventListener('DOMContentLoaded', () => {
     unlockRES();
 
     // 添加部分播放器事件
-    setTimeout(() => {
+    unsafeWindow.setTimeout(() => {
       const vid = mutations[0].target; // 此处观察的节点即getById('hy-video')
       let flag = null,
         tid = null;
@@ -245,18 +247,18 @@ window.addEventListener('DOMContentLoaded', () => {
       getById('player-mouse-event-wrap').onmousemove = function () {
         if (flag) return;
         flag = true;
-        clearTimeout(tid);
+        unsafeWindow.clearTimeout(tid);
         this.style.cursor = '';
         if (toggles[4].gmValue) {
           getById('player-ctrl-wrap').classList.add('showup');
         }
-        tid = setTimeout(() => {
+        tid = unsafeWindow.setTimeout(() => {
           this.style.cursor = 'none';
           if (toggles[4].gmValue) {
             getById('player-ctrl-wrap').classList.remove('showup');
           }
         }, 5000);
-        setTimeout(() => {
+        unsafeWindow.setTimeout(() => {
           flag = null;
         }, 1000);
       };
@@ -268,16 +270,16 @@ window.addEventListener('DOMContentLoaded', () => {
         vid.addEventListener('click', () => {
           isOneClick = !tmp;
           if (isOneClick) {
-            tmp = setTimeout(() => {
+            tmp = unsafeWindow.setTimeout(() => {
               tmp = null;
             }, 301);
           }
         });
         vid.onclick = () => {
-          clearTimeout(tid);
+          unsafeWindow.clearTimeout(tid);
           const arr = ['smartMenu_videoMenu', 'player-danmu-report'];
           if (arr.every((e) => !(getById(e)?.style.display === 'block'))) {
-            tid = setTimeout(() => {
+            tid = unsafeWindow.setTimeout(() => {
               isOneClick && getById('player-btn').click();
             }, 300);
           }
