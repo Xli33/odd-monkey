@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.13.2](https://github.com/Xli33/odd-monkey/compare/v1.13.1...v1.13.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* 修复在最近较新的firefox（衍生版本）上部分播放器控制功能可能失效 ([730a443](https://github.com/Xli33/odd-monkey/commit/730a443262235bed9163a193f5c80685c69b2eaf))
+
 ## [1.13.1](https://github.com/Xli33/odd-monkey/compare/v1.13.0...v1.13.1) (2025-09-30)
 
 
